@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, map, Subscription } from 'rxjs';
 import { PromotionAdsService } from 'src/app/Services/promotion-ads.service';
 import { StoreData } from 'src/app/ViewModels/store-data';
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isImageShown = true;
   subscription!: Subscription;
   AllSubscriptions: Subscription[] = [];
-  constructor(private adsService: PromotionAdsService) {
+  constructor(private adsService: PromotionAdsService, private snackBar: MatSnackBar) {
     this.storeInfo = new StoreData('Nabil', 'https://picsum.photos/350/200', [
       'Cairo',
       'Alex',
@@ -47,14 +48,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     let observer = {
       next: (data: string) => {
-        alert(data);
+        this.SnackBarAlert(data);
 
       },
       error: (err: string) => {
-        alert(err);
+        this.SnackBarAlert(err);
       },
       complete: () => {
-        alert("Ads list completed successfully..!");
+        this.SnackBarAlert("Ads list completed successfully..!");
       }
     }
     let subscription = this.adsService.GetAllAds(2).pipe(
@@ -74,5 +75,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ToggleImage() {
     this.isImageShown = !this.isImageShown;
+  }
+
+  private SnackBarAlert(message: string) {
+    this.snackBar.open(message, 'Ok', {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right'
+    });
   }
 }

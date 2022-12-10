@@ -31,11 +31,9 @@ export class PromotionAdsService {
           observer.error("Error Message")
         }
         observer.next(this.adsList[count++]);
-      }, timeInSeconds * 1000);
+      }, timeInSeconds * 10000);
       return {
-        unsubscribe() {
-          alert("In unsubscribe method");
-        }
+        unsubscribe() { }
       }
     });
   }
