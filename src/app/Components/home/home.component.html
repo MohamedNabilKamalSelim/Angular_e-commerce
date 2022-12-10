@@ -1,0 +1,21 @@
+<!-- Interpolation Binding-->
+<!-- <img src="{{ storeInfo.imageUrl }}" alt="IMG" /> -->
+
+<!-- Prorerity Binding -->
+<img
+  *ngIf="isImageShown"
+  [src]="storeInfo.imageUrl"
+  alt="IMG"
+  class="img-fluid m-1"
+/>
+<button type="button" class="btn btn-primary" (click)="ToggleImage()">
+  Toggle Image
+</button>
+
+<h1>{{ storeInfo.name }}</h1>
+
+<h3>Our Branches</h3>
+<!-- Structural Directives -->
+<ul>
+  <li *ngFor="let item of storeInfo.branches">{{ item }}</li>
+</ul>

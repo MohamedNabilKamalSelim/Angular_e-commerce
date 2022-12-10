@@ -1,0 +1,42 @@
+<div
+  class="card m-auto"
+  style="width: 50%; font-size: 20px; text-align: center"
+>
+  <img
+    [src]="currentProduct?.imageUrl"
+    class="card-img-top"
+    style="height: 30%; object-fit: cover"
+    alt="Product Image"
+  />
+  <div class="card-body">
+    <h2 class="card-title">{{ currentProduct?.name }}</h2>
+    <div class="card-text">
+      <p>Quantity: {{ currentProduct?.quantity }}</p>
+      <p>Price: {{ currentProduct?.price | currency }}</p>
+    </div>
+    <hr />
+    <div
+      class="btn-group d-flex justify-content-evenly"
+      role="group"
+      aria-label="Basic mixed styles example"
+    >
+      <button
+        type="button"
+        [disabled]="CheckFirstIndex()"
+        class="btn btn-info"
+        (click)="PreviousItem()"
+      >
+        &#60; Previous
+      </button>
+      <button class="btn btn-outline-primary" (click)="GoBack()">Back</button>
+      <button
+        type="button"
+        [disabled]="CheckLastIndex()"
+        class="btn btn-info"
+        (click)="NextItem()"
+      >
+        Next &#62;
+      </button>
+    </div>
+  </div>
+</div>

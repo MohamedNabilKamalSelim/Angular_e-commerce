@@ -1,0 +1,97 @@
+<form
+  [formGroup]="registerForm"
+  class="border border-info p-3 w-75 m-2 rounded-bottom"
+  (ngSubmit)="Register()"
+>
+  <div class="mb-3">
+    <label for="emailId" class="form-label">Email</label>
+    <input
+      type="email"
+      id="emailId"
+      name="emailName"
+      class="form-control"
+      placeholder=""
+      formControlName="email"
+      required
+    />
+    <div [hidden]="email.valid || email.untouched">
+      <small
+        id=""
+        *ngIf="email.errors?.['required']"
+        class="form-text text-muted d-block"
+      >
+        This fiels is required
+      </small>
+      <small
+        id=""
+        *ngIf="email.errors?.['email'] || email.errors?.['pattern']"
+        class="form-text text-muted d-block"
+      >
+        Please type a valid email
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="passwordId" class="form-label">Password</label>
+    <input
+      type="password"
+      id="passwordId"
+      name="passwordName"
+      class="form-control"
+      placeholder=""
+      formControlName="password"
+      required
+    />
+    <div [hidden]="password.valid || password.untouched">
+      <small
+        id=""
+        *ngIf="password.errors?.['required']"
+        class="form-text text-muted d-block"
+      >
+        This fiels is required
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="confirmPasswordId" class="form-label">confirm Password</label>
+    <input
+      type="Password"
+      id="confirmPasswordId"
+      name="confirmPasswordName"
+      class="form-control"
+      placeholder=""
+      formControlName="confirmPassword"
+      required
+    />
+
+    <div [hidden]="confirmPassword.untouched">
+      <small
+        id=""
+        *ngIf="confirmPassword.errors?.['required']"
+        class="form-text text-muted d-block"
+      >
+        This fiels is required
+      </small>
+      <small
+        *ngIf="registerForm.errors?.['PasswordMismatch'] && !confirmPassword.errors?.['required']&&(confirmPassword.touched || confirmPassword.dirty)"
+        class="alert alert-danger d-block"
+      >
+        Password and confirm password must be the same.
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <button
+      type="submit"
+      [disabled]="registerForm.invalid"
+      class="btn btn-primary"
+    >
+      Register
+    </button>
+  </div>
+</form>
+
+<h1 class="bg-warning p-2 m-2">{{ registerForm.errors | json }}</h1>

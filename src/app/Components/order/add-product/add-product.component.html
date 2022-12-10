@@ -1,0 +1,329 @@
+<form
+  [formGroup]="productFG"
+  class="border border-info p-3 w-75 m-2 rounded-bottom"
+  (ngSubmit)="this.productIdForEdit ? EditProduct() : AddProduct()"
+  *ngIf="ProductForEditing; else spinner"
+>
+  <div class="mb-3" [hidden]="productIdForEdit == 0">
+    <label for="prodidId" class="form-label">Product ID</label>
+    <input
+      type="number"
+      id="prodidId"
+      name="rodidName"
+      class="form-control"
+      [readOnly]="productIdForEdit != 0"
+      placeholder=""
+      formControlName="id"
+      required
+    />
+    <!-- [readOnly]="productIdForEdit != 0"
+      [ngClass]="{
+        'is-valid': prodId.valid,
+        'is-invalid': prodId.invalid && prodId.touched
+      }" -->
+    <div [hidden]="prodId.valid || prodId.untouched">
+      <small
+        id=""
+        *ngIf="prodId.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodNameId" class="form-label">Product Name</label>
+    <input
+      type="text"
+      id="prodNameId"
+      name="prodNameName"
+      class="form-control"
+      placeholder=""
+      formControlName="name"
+      required
+      minlength="3"
+    />
+    <div [hidden]="prodName.valid || prodName.untouched">
+      <small
+        id=""
+        *ngIf="prodName.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+      <small
+        id=""
+        *ngIf="prodName.errors?.['minlength']"
+        class="form-text text-muted d-block"
+        >This fiels must contain at least 3 charachter</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodQuantityId" class="form-label">Product Quantity</label>
+    <input
+      type="number"
+      id="prodQuantityId"
+      name="prodQuantityName"
+      class="form-control"
+      placeholder=""
+      required
+      formControlName="quantity"
+    />
+    <div [hidden]="prodQuant.valid || prodQuant.untouched">
+      <small
+        id=""
+        *ngIf="prodQuant.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodPriceId" class="form-label">Product Price</label>
+    <input
+      type="number"
+      id="prodPriceId"
+      name="prodPriceName"
+      class="form-control"
+      placeholder=""
+      formControlName="price"
+      required
+    />
+    <div [hidden]="prodPrice.valid || prodPrice.untouched">
+      <small
+        id=""
+        *ngIf="prodPrice.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodCatId" class="form-label">Category</label>
+    <select
+      class="form-select form-select-lg"
+      id="prodCatIdId"
+      name="prodCatIdName"
+      formControlName="categoryId"
+      required
+    >
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+    <div [hidden]="prodCatId.valid || prodCatId.untouched">
+      <small
+        id=""
+        *ngIf="prodCatId.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodImgId" class="form-label">Product Image Url</label>
+    <input
+      type="text"
+      id="prodImgId"
+      name="prodImgName"
+      class="form-control"
+      placeholder=""
+      formControlName="imageUrl"
+    />
+    <small id="" class="form-text text-muted"></small>
+  </div>
+  <div class="mb-3">
+    <button #submitBtn id="submitBtnId" type="submit" class="btn btn-primary">
+      {{ submitBtnText }}
+    </button>
+  </div>
+</form>
+
+<ng-template #spinner>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
+
+<!-- <div class="bg-warning m-2 p-3">
+  [For Removed]
+  <h1>{{ productFG.value | json }}</h1>
+</div> -->
+
+<!-- <div class="bg-warning m-1 p-2">
+  [For Removed]
+  <h2>{{ newProduct | json }}</h2>
+  <h1>{{ prodName.errors | json }}</h1>
+</div> -->
+
+<!-- <div class="Edit" *ngIf="productIdForEdit">
+  <button type="button" class="btn btn-primary" (click)="EditProduct()">
+    Edit
+  </button>
+</div> -->
+
+<!-- <div class="Crete" *ngIf="!productIdForEdit">
+  <button type="button" class="btn btn-primary" (click)="AddProduct()">
+    Add
+  </button>
+</div> -->
+
+<!-- <form
+  #productForm="ngForm"
+  class="border border-info p-3 w-75 m-2 rounded-bottom"
+  (ngSubmit)="AddProduct()"
+>
+  <div class="mb-3">
+    <label for="prodidId" class="form-label">Product ID</label>
+    <input
+      #prodId="ngModel"
+      type="number"
+      id="prodidId"
+      name="rodidName"
+      class="form-control"
+      placeholder=""
+      [(ngModel)]="newProduct.id"
+      [ngClass]="{
+        'is-valid': prodId.valid,
+        'is-invalid': prodId.invalid && prodId.touched
+      }"
+      required
+    />
+    <div [hidden]="prodId.valid || prodId.untouched">
+      <small
+        id=""
+        *ngIf="prodId.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodNameId" class="form-label">Product Name</label>
+    <input
+      #prodName="ngModel"
+      type="text"
+      id="prodNameId"
+      name="prodNameName"
+      class="form-control"
+      placeholder=""
+      [(ngModel)]="newProduct.name"
+      [ngClass]="{
+        'is-valid': prodName.valid,
+        'is-invalid': prodName.invalid && prodName.touched
+      }"
+      required
+      minlength="3"
+    />
+    <div [hidden]="prodName.valid || prodName.untouched">
+      <small
+        id=""
+        *ngIf="prodName.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+      <small
+        id=""
+        *ngIf="prodName.errors?.['minlength']"
+        class="form-text text-muted d-block"
+        >This fiels must contain at least 3 charachter</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodQuantityId" class="form-label">Product Quantity</label>
+    <input
+      #prodQuant="ngModel"
+      type="number"
+      id="prodQuantityId"
+      name="prodQuantityName"
+      class="form-control"
+      placeholder=""
+      required
+      [(ngModel)]="newProduct.quantity"
+      [ngClass]="{
+        'is-valid': prodQuant.valid,
+        'is-invalid': prodQuant.invalid && prodQuant.touched
+      }"
+    />
+    <div [hidden]="prodQuant.valid || prodQuant.untouched">
+      <small
+        id=""
+        *ngIf="prodQuant.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodPriceId" class="form-label">Product Price</label>
+    <input
+      #prodPrice="ngModel"
+      type="number"
+      id="prodPriceId"
+      name="prodPriceName"
+      class="form-control"
+      placeholder=""
+      [(ngModel)]="newProduct.price"
+      [ngClass]="{
+        'is-valid': prodPrice.valid,
+        'is-invalid': prodPrice.invalid && prodPrice.touched
+      }"
+      required
+    />
+    <div [hidden]="prodPrice.valid || prodPrice.untouched">
+      <small
+        id=""
+        *ngIf="prodPrice.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodCatId" class="form-label">Category</label>
+    <select
+      #prodCatId="ngModel"
+      class="form-select form-select-lg"
+      id="prodCatIdId"
+      name="prodCatIdName"
+      [(ngModel)]="newProduct.categoryId"
+      required
+      [ngClass]="{
+        'is-valid': prodCatId.valid,
+        'is-invalid': prodCatId.invalid && prodCatId.touched
+      }"
+    >
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+    <div [hidden]="prodCatId.valid || prodCatId.untouched">
+      <small
+        id=""
+        *ngIf="prodCatId.errors?.['required']"
+        class="form-text text-muted d-block"
+        >This fiels is required</small
+      >
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="prodImgId" class="form-label">Product Image Url</label>
+    <input
+      #prodImgUrl
+      type="text"
+      id="prodImgId"
+      name="prodImgName"
+      class="form-control"
+      placeholder=""
+      [(ngModel)]="newProduct.imageUrl"
+    />
+    <small id="" class="form-text text-muted"></small>
+  </div>
+  <div class="mb-3">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="productForm.invalid"
+    >
+      Add
+    </button>
+  </div>
+</form> -->

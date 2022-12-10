@@ -1,0 +1,121 @@
+<a
+  name=""
+  id=""
+  class="btn btn-primary btn-lg m-3"
+  [routerLink]="['/Products/AddProduct']"
+  role="button"
+  >Add New Product</a
+>
+
+<div class="table-responsive m-2">
+  <table
+    class="table table-striped table-hover table-borderless table-primary align-middle"
+  >
+    <thead class="table-light">
+      <caption class="bg-secondary w-100">
+        <h1 class="m-1">Products</h1>
+      </caption>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Image</th>
+        <th>Details</th>
+        <th>Count</th>
+        <th>Bye</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr
+        *ngFor="
+          let product of selectedCategoryProducts;
+          let i = index;
+          trackBy: ProductTrackByFunc
+        "
+        class="table-primary"
+        [ngClass]="{
+          'border border-danger': product.quantity == 0,
+          'text-danger': product.quantity == 0
+        }"
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency : "EUR" }}</td>
+        <td>
+          <div *ngIf="product.quantity; else outOfStock">
+            {{ product.quantity }}
+          </div>
+          <ng-template #outOfStock>Out Of Stock</ng-template>
+        </td>
+        <td>
+          <img
+            appLightBox
+            defaultColor="darkgreen"
+            highLightColor="red"
+            [src]="product.imageUrl"
+            alt="Product Image"
+          />
+        </td>
+        <td>
+          <a
+            class="btn btn-primary btn-sm"
+            role="button"
+            [routerLink]="['/Products/ProductDetails', product.id]"
+          >
+            Details
+          </a>
+        </td>
+        <!-- Template Variable -->
+        <td>
+          <input
+            #itemsCount
+            type="number"
+            class="form-control"
+            [disabled]="product.quantity == 0 || isUserLoggedIn == null"
+          />
+        </td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="
+              Bye({
+                productId: product.id,
+                price: product.price,
+                count: +itemsCount.value,
+                total: 0,
+                name: product.name,
+                AVQuantity: product.quantity,
+                imageUrl: product.imageUrl
+              })
+            "
+            [disabled]="product.quantity == 0 || isUserLoggedIn == null"
+          >
+            Bye
+          </button>
+        </td>
+        <td>
+          <a
+            name="editBtnName"
+            id="editBtnId"
+            class="btn btn-primary btn-sm"
+            [routerLink]="['/Products/EditProduct', product.id]"
+            role="button"
+          >
+            Edit
+          </a>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="DeleteProduct(product.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+</div>

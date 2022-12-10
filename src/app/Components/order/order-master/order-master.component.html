@@ -1,0 +1,116 @@
+<div class="mb-3 row m-1">
+  <div class="col-5">
+    <label for="selectCategory"><h1>Categories</h1></label>
+    <select
+      class="form-select form-select-lg"
+      name="category"
+      id="selectCategory"
+      [(ngModel)]="selectedCategoryId"
+    >
+      <option value="0" selected>All</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+  </div>
+  <div class="col-5 m-1">
+    <label for="maxPriceId"><h1>Max Price</h1></label>
+    <input
+      type="number"
+      class="form-control form-control-lg"
+      [(ngModel)]="selectedMaxPrice"
+    />
+  </div>
+</div>
+
+<!-- <div class="text-secondary">
+    [ToRemove]
+    {{ selectedCategoryId }} <br />
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="ResetCategoryId()"
+    >
+      Reset Category Id
+    </button>
+</div> -->
+
+<hr />
+
+<app-product-list
+  [reciveCategoryId]="selectedCategoryId"
+  [reciveMaxPrice]="selectedMaxPrice"
+  [reciveNewProductsAfterConfirmation]="NewProductsAfterConfirmation"
+  (sendOrderDetail)="HandelOrdersDetails($event)"
+  (sendDeletedProduct)="HandelDeletedProduct($event)"
+></app-product-list>
+
+<hr />
+
+<div class="table-responsive" [hidden]="!isThereAnyOrderYet">
+  <table
+    class="table table-striped table-hover table-borderless table-primary align-middle"
+  >
+    <thead class="table-light">
+      <caption class="bg-secondary w-100">
+        <h1 class="m-1">Orders</h1>
+      </caption>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Count</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr
+        class="table-primary"
+        *ngFor="let order of allOrders; trackBy: OrderTrackBy; let i = index"
+      >
+        <td>{{ i }}</td>
+        <td>{{ order.name }}</td>
+        <td>{{ order.price }}</td>
+        <td>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            name="countInput"
+            id="countInputId"
+            #orderUpdatedCount
+            value="{{ order.count }}"
+          />
+        </td>
+        <td>{{ order.total }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="ConfirmOrder(order)"
+          >
+            Confirm
+          </button>
+          <button
+            type="button"
+            name="updateBtn"
+            id="updateBtnId"
+            class="btn btn-info btn-sm m-1"
+            (click)="UpdateOrder(order.productId, +orderUpdatedCount.value)"
+          >
+            Update
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="RemoveOrder(order.productId)"
+          >
+            Remove
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <h3>Order Total Price: {{ orderTotalPrice | currency : "EUR" }}</h3>
+    </tfoot>
+  </table>
+</div>
